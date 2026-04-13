@@ -45,12 +45,14 @@ int solution(vector<vector<int>> signals) {
     
     vector<pair<int, int>> temp(signals.size(), {0, 1});
     
-    for (answer = 1; answer < get_lcm(signals); answer++){
+    long long arrays_lcm = get_lcm(signals);
+    for (answer = 2; answer < arrays_lcm; answer++){
         int count = 0;
         for (int i = 0; i < signals.size(); i++){
             int color = temp[i].first % signals[0].size();
             int repeat = temp[i].second;
             
+            // 불이 바뀌는지 확인
             if (repeat == signals[i][color]) {
                 temp[i].first++;
                 temp[i].second = 1;
@@ -58,7 +60,8 @@ int solution(vector<vector<int>> signals) {
                 temp[i].second++;
             }
             
-            if (color == 1) {
+            // 현재 노란불인지 확인
+            if (temp[i].first % signals[0].size() == 1) {
                 count++;
             } else {
                 count--;
