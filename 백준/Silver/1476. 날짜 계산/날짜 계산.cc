@@ -2,6 +2,10 @@
 
 using namespace std;
 
+#define E_MAX 15
+#define S_MAX 28
+#define M_MAX 19
+
 int main() {
     /**
      * 날짜 범위가 정해진 E, S, M 이라는 세 수가 있다.
@@ -13,6 +17,10 @@ int main() {
      * 1. e, s, m을 입력받는다
      * 2. for 문을 돌며 e, s, m이 모두 같을 때 까지 answer에 1씩 더한다
      * 3. e, s, m이 범위를 넘어갈 때 마다 1로 초기화 한다.
+     * 
+     * -- 추가 수정 사항 --
+     * 1. 나머지 연산을 통해 e, s, m이 범위를 넘어가는걸 처리한다.
+     * 2. 나머지 연산이 0이 나올 때는 각 범위의 최대값으로 처리한다.
      */
 
     cin.tie(0);
@@ -23,9 +31,9 @@ int main() {
     cin >> e >> s >> m;
 
     int answer = 1;
-    while (((answer % 15 ? answer % 15 : 15) != e) 
-        || ((answer % 28 ? answer % 28 : 28) != s)
-        || ((answer % 19 ? answer % 19 : 19) != m)) {
+    while (((answer % E_MAX ? answer % E_MAX : E_MAX) != e) 
+        || ((answer % S_MAX ? answer % S_MAX : S_MAX) != s)
+        || ((answer % M_MAX ? answer % M_MAX : M_MAX) != m)) {
 
         answer++;
     }
