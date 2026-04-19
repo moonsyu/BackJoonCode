@@ -1,64 +1,101 @@
-#include<iostream>
-#include<vector>
-#include<queue>
-#include<algorithm>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
 
-void dfs(vector<int> &visit, vector<vector<int>> &dfs_bfs, int v) {
-	if (visit[v] == 0) {// 방문하지 않은 정점일 경우 실행
-		cout << v << " ";// 방문한 정점 출력
-		visit[v] = 1;// 방문한 표시
-		
-		for (int i = 0; i < dfs_bfs[v].size(); i++) // 간선 개수만큼 파고드는 반복문
-			dfs(visit, dfs_bfs, dfs_bfs[v][i]); // 연결된 간선의 끝으로 향하게 바로 함수 선언 
+
+void dfs(vector<vector<int>>& graph, vector<bool>& visit, int now) {
+	
+	visit[now] = false;
+	cout << now << " ";
+
+	for (int i = 0; i < graph[now].size(); i++) {
+		if (visit[graph[now][i]]) {
+			dfs(graph, visit, graph[now][i]);
+		}
 	}
 }
 
-void bfs(vector<int>& visit, vector<vector<int>>& dfs_bfs, queue<int> &que, int v) {
+
+void bfs(vector<vector<int>>& graph, int start) {
+	queue<int> que;
+	que.push(start);
+
+	vector<bool> visit(graph.size(), true);
+	visit[start] = false;
 
 	while (!que.empty()) {
-		v = que.front();
-		if (visit[v] == 0) {
-			cout << v << " ";
-			visit[v] = 1;
-			for (int i = 0; i < dfs_bfs[v].size(); i++) {
-				if (visit[dfs_bfs[v][i]] == 0)// bfs는 dfs와 달리 지나간곳을 간선을 통해 또 갈수도 있기에 안지나간 곳만 push하게 선언
-					que.push(dfs_bfs[v][i]);
+		int now = que.front();
+		que.pop();
+
+		cout << now << " ";
+
+		for (int i = 0; i < graph[now].size(); i++) {
+			if (visit[graph[now][i]]) {
+				visit[graph[now][i]] = false;
+				que.push(graph[now][i]);
 			}
 		}
-		que.pop(); // 다음 순서의 정점을 파악하기 위해 먼저 지나간 정점 삭제
 	}
 }
+
 
 int main() {
 	cin.tie(NULL);
 	ios::sync_with_stdio(false);
 	cout.tie(NULL);
 
-	int n, m, v, a, b;
+	/**
+	* 간선을 입력받아 BFS와 DFS로 탐색한 결과를 출력하라
+	* 
+	* -- 자연어 풀이 --
+	* 1. n, m, v를 입력받는다
+	* 2. n의 크기를 가진 2차원 vector와 방문 확인용 n * n vector를 선언한다
+	* 3. m개의 간선을 입력 받아 2차원 vector에 저장한다
+	*    ㄴ ex) 0 1 입력 -> vector[0].push_back(1), vector[1].push_back(0)
+	* 4. 시작점(v)를 시작으로 dfs 방식으로 탐색한다
+	*    ㄴ 1. 함수의 인자는 (vector, visit, now)를 사용한다
+	*    ㄴ 2. visit[now][i] == true 라면 
+	*    ㄴ 3. visit[now][i] = false로 바꿔주고, 
+	*	 ㄴ 4. visit[now][i]를 출력 후, 
+	*	 ㄴ 5. dfs(vector, visit, vector[now][i])를 호출한다
+	* 5. 시작점(v)를 시작으로 bfs 방식으로 탐색한다
+	*    ㄴ 1. 함수의 인자는 (vector, visit, now)를 사용한다
+	*    ㄴ 2. visit[now][i] == true 라면
+	*    ㄴ 3. visit[now][i] = false로 바꿔주고,
+	*	 ㄴ 4. visit[now][i]를 출력 후,
+	*    ㄴ 5. queue에 vector[now][i]를 저장한다
+	*    ㄴ 6. queue가 빌 때까지 2~5번을 반복한다
+	* 
+	* -- 추가 수정 사항 --
+	* 1. dfs에 prev 인자를 추가하여, 이전 노드로 돌아가는 경우 방지 xx
+	* 2. dfs에서 간선의 방문 확인을 양쪽에 체크
+	*    ㄴ visit[now][graph[now][i]] = visit[graph[now][i]][now] = false;
+	* 3. visit을 1차원 vector로 변환
+	*    ㄴ 간선이 아닌 정점의 방문 여부를 체크
+    * 4. 정점 번호가 작은것 부터 우선 방문
+	*/
 
+	int n, m, v;
 	cin >> n >> m >> v;
 
-	vector<vector<int>> dfs_bfs(n + 1); //┐
-	vector<int> visit(n + 1, 0); // ㅡㅡㅡㅡ 정점의 수가 1부터 시작하기에 n + 1을 하여 배열의 크기 증가
-	queue<int> que;
+	vector<vector<int>> graph(n + 1, vector<int>(0));
+	vector<bool> visit(graph.size(), true);
+	for (int i = 0; i < m; i++) {
+		int s, e;
+		cin >> s >> e;
 
-	for (int i = 0; i < m; i++) {// 간선 생성 2차원 배열로 선언하여 1과 2를 연결할때 [1][0] = 2 가되는방식
-		cin >> a >> b;
-		dfs_bfs[a].push_back(b);
-		dfs_bfs[b].push_back(a);
+		graph[s].push_back(e);
+		graph[e].push_back(s);
 	}
 
-	for (int i = 0; i <= n; i++)// 전체적인 순서가 아닌 각 정점과 연결되어 있는 정점을 작은순으로 가게끔 재배치 한 코드
-		stable_sort(dfs_bfs[i].begin(), dfs_bfs[i].end());
+	for (vector<int>& v : graph) {
+		sort(v.begin(), v.end());
+	}
 
-	dfs(visit, dfs_bfs, v);
-	
-	for (int i = 0; i < n + 1; i++) // dfs에서 방문했던값을 없애고 방문하지 않은것처럼 초기화
-		visit[i] = 0;
-
-	cout << "\n";// dfs, bfs의 출력을 구분하기 위한 띄우기
-	que.push(v);// 정점의 출발점을 que에 입력
-	bfs(visit, dfs_bfs, que, v);
+	dfs(graph, visit, v);
+	cout << "\n";
+	bfs(graph, v);
 }
