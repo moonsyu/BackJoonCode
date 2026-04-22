@@ -20,21 +20,18 @@ int main() {
 
 		if (a == -1 && b == -1 && c == -1) {
 			break;
-		} else if (a <= 0 || b <= 0 || c <= 0) {
-			cout << "w(" << a << ", " << b << ", " << c << ") = 1\n";
 		} else {
 			cout << "w(" << a << ", " << b << ", " << c << ") = ";
-			if (a > 20 || b > 20 || c > 20) {
+
+			if (a <= 0 || b <= 0 || c <= 0) {
+				a = b = c = 0;
+			} else if (a > 20 || b > 20 || c > 20) {
 				a = b = c = 20;
-			} else {
-				a = min(a, 20);
-				b = min(b, 20);
-				c = min(c, 20);
 			}
 
-			for (int i = 0; i <= min(a, 20); i++) {
-				for (int j = 0; j <= min(b, 20); j++) {
-					for (int k = 0; k <= min(c, 20); k++) {
+			for (int i = 0; i <= a; i++) {
+				for (int j = 0; j <= b; j++) {
+					for (int k = 0; k <= c; k++) {
 						if (i == 0 || j == 0 || k == 0) {
 							dp[i][j][k] = 1;
 						} else if (i < j && j < k) {
