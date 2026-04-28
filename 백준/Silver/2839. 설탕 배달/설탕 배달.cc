@@ -13,7 +13,7 @@ int main() {
 	cin >> n;
 
 	// 기본 값 초기화
-	vector<int> dp(n + 1, LLONG_MAX);
+	vector<int> dp(n + 1);
 	for (int i = 0; i < 3; i++) {
 		dp[i] = -1;
 	}

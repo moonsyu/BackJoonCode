@@ -11,6 +11,7 @@ int main() {
 		int n, k;
 		cin >> n >> k;
 
+		// 무게: v, 가치: c
 		vector<int> v(n + 1);
 		vector<int> c(n + 1);
 		for (int j = 1; j <= n; j++) {

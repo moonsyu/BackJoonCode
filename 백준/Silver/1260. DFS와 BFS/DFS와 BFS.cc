@@ -75,13 +75,13 @@ int main() {
 	*    ㄴ visit[now][graph[now][i]] = visit[graph[now][i]][now] = false;
 	* 3. visit을 1차원 vector로 변환
 	*    ㄴ 간선이 아닌 정점의 방문 여부를 체크
-    * 4. 정점 번호가 작은것 부터 우선 방문
+	* 4. 정점 번호가 작은것 부터 우선 방문
 	*/
 
 	int n, m, v;
 	cin >> n >> m >> v;
 
-	vector<vector<int>> graph(n + 1, vector<int>(0));
+	vector<vector<int>> graph(n + 1);
 	vector<bool> visit(graph.size(), true);
 	for (int i = 0; i < m; i++) {
 		int s, e;
