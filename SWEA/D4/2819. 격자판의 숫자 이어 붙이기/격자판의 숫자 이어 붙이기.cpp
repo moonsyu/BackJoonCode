@@ -11,24 +11,29 @@ set<int> num_set;
 int dx[] = { 1, 0, -1, 0 };
 int dy[] = { 0, -1, 0, 1 };
 
-/* 조합의 경우의 수 조회 */
+/* 숫자 조합 생성 */
 void combination(vector<vector<int>>& board, int x, int y, int num, int cnt) {
 	
+	// 숫자 7개가 만들어졌다면 set에 추가
 	if (cnt == num_size) {
 		num_set.insert(num);
 		return;
 	} else {
+
+		// 4방향 탐색
 		for (int i = 0; i < 4; i++) {
 			int nx = x + dx[i];
 			int ny = y + dy[i];
 
 			if (nx >= 0 && nx < board_size && ny >= 0 && ny < board_size) {
+				// 기존 숫자에 다음 숫자를 더해서 새로운 숫자 생성
 				int new_num = num * 10 + board[nx][ny];
 				combination(board, nx, ny, new_num, cnt + 1);
 			}
 		}
 	}
 }
+
 
 int main() {
 	int tc;
@@ -45,6 +50,7 @@ int main() {
 		num_set.clear();
 		for (int j = 0; j < board_size; j++) {
 			for (int k = 0; k < board_size; k++) {
+				// 숫자 조합 생성
 				combination(board, j, k, board[j][k], 1);
 			}
 		}
