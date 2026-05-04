@@ -156,10 +156,6 @@ int main() {
 		string command;
 		cin >> command;
 
-		//cout << "now\n";
-		//output_map(map);
-		//cout << "\n";
-
 		// 커맨드 실행
 		for (int j = 0; j < command.length(); j++) {
 			if (command[j] == 'S') {
@@ -167,11 +163,6 @@ int main() {
 			} else {
 				move(map, tank, command[j]);
 			}
-
-			//cout << j + 1 << " turn\n";
-			//cout << "command: " << command[j] << "\n";
-			//output_map(map);
-			//cout << "\n";
 		}
 
 		// 결과 출력
