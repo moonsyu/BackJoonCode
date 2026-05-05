@@ -23,26 +23,22 @@ int main() {
 
 		// 강의 시작일 및 1주간 강의 개수 조회
 		int start_day = -1;
-		int class_cnt = 0;
 		for (int j = 0; j < week_size; j++) {
-			if (plan[j]) {
-				if (start_day == -1) {
-					start_day = j;
-				}
-
-				class_cnt++;
+			if (plan[j] && start_day == -1) {
+				start_day = j;
 			}
 		}
 
+		// 각 강의 시작일에 대해 n개의 강의를 듣기 위한 최소 일수 계산
 		long long answer = LLONG_MAX;
 		for (int j = start_day; j < week_size; j++) {
 			long long day_cnt = 0;
-			int copy_n = n;
-			for (int k = j; copy_n > 0; k++) {
+			int class_cnt = n;
+			for (int k = j; class_cnt > 0; k++) {
 				day_cnt++;
 
 				if (plan[k % week_size]) {
-					copy_n--;
+					class_cnt--;
 				}
 			}
 
