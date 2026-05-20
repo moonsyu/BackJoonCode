@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
@@ -16,27 +15,20 @@ int main() {
 		int a, b, c, d;
 		cin >> a >> b >> c >> d;
 
-		// 켜진 시간 정렬
-		vector<pair<int, int>> light;
-		light.push_back({ a, b });
-		light.push_back({ c, d });
+		vector<int> light(101, 0);
+		for (int i = a; i < b; i++) {
+			light[i]++;
+		}
 
-		sort(light.begin(), light.end());
+		for (int i = c; i < d; i++) {
+			light[i]++;
+		}
 
 		int answer = 0;
-		// 시간 배치: a ~~~~~~~~~ b
-		//               c ~~~ d
-		if (light[0].second >= light[1].second) {
-			answer = light[1].second - light[1].first;
-		} 
-		// 시간 배치: a ~ b  c ~ d
-		else if (light[0].second < light[1].first) {
-			answer = 0;
-		} 
-		// 시간 배치: a ~~~~~ b
-		//                c ~~~~~ d
-		else {
-			answer = light[0].second - light[1].first;
+		for (int i = 0; i < light.size(); i++) {
+			if (light[i] == 2) {
+				answer++;
+			}
 		}
 
 		cout << "#" << t << " " << answer << "\n";
