@@ -49,6 +49,10 @@ int col_cnt(vector<vector<string>>& board) {
 
 
 int main() {
+
+	cin.tie(nullptr);
+	ios::sync_with_stdio(false);
+
 	int tc;
 	cin >> tc;
 
