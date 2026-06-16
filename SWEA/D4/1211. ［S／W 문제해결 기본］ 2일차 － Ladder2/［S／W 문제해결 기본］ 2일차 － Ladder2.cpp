@@ -20,6 +20,37 @@ void input_start_info(queue<pair<pair<int, int>, pair<int, char>>>& que, vector<
 }
 
 
+/* 사다리 탐색 */
+int ladder_bfs(queue<pair<pair<int, int>, pair<int, char>>>& que, vector<vector<int>>& ladder) {
+	while (!que.empty()) {
+		int y = que.front().first.first;
+		int x = que.front().first.second;
+		int start_x = que.front().second.first;
+		char direction = que.front().second.second;
+		que.pop();
+
+		// 끝 도달 시 반복문 탈출
+		if (y == MAX_SIZE - 1) {
+			return start_x;
+		}
+
+		// 좌표 이동
+		if (x + 1 < MAX_SIZE && ladder[y][x + 1] == 1 && direction != 'L') {// 오른쪽 이동
+			que.push({ { y, x + 1 }, { start_x, 'R' } });
+			//cout << "push right: " << y << ", " << x + 1 << "\n";
+		}
+		else if (x - 1 >= 0 && ladder[y][x - 1] == 1 && direction != 'R') { // 왼쪽 이동
+			que.push({ { y, x - 1 }, { start_x, 'L' } });
+			//cout << "push left: " << y << ", " << x - 1 << "\n";
+		}
+		else { // 아래로 이동
+			que.push({ { y + 1, x }, { start_x, 'D' } });
+			//cout << "push down: " << y + 1 << ", " << x << "\n";
+		}
+	}
+}
+
+
 int main() {
 
 	cin.tie(NULL);
@@ -38,35 +69,10 @@ int main() {
 			}
 		}
 		
+		// 출발점 정보 입력
 		input_start_info(que, ladder);
 
-		int answer = -1; /* 정답 */
-		while (!que.empty()) {
-			int y = que.front().first.first;
-			int x = que.front().first.second;
-			int start_x = que.front().second.first;
-			char direction = que.front().second.second;
-			que.pop();
-
-			// 끝 도달 시 반복문 탈출
-			if (y == MAX_SIZE - 1) {
-				answer = start_x;
-				break;
-			}
-
-			// 좌표 이동
-			if (x + 1 < MAX_SIZE && ladder[y][x + 1] == 1 && direction != 'L') {// 오른쪽 이동
-				que.push({{ y, x + 1 }, { start_x, 'R' }});
-				//cout << "push right: " << y << ", " << x + 1 << "\n";
-			} else if (x - 1 >= 0 && ladder[y][x - 1] == 1 && direction != 'R') { // 왼쪽 이동
-				que.push({{ y, x - 1 }, { start_x, 'L' }});
-				//cout << "push left: " << y << ", " << x - 1 << "\n";
-			} else { // 아래로 이동
-				que.push({{ y + 1, x }, { start_x, 'D' }});
-				//cout << "push down: " << y + 1 << ", " << x << "\n";
-			}
-		}
-
+		int answer = ladder_bfs(que, ladder); /* 정답 */
 		cout << "#" << t << " " << answer << "\n";
 	}
 }
