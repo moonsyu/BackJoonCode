@@ -1,45 +1,42 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
+int answer;
 
-void dfs(vector<int>& tall, vector<bool> &item, int idx, int sum) {
-
-	if (idx == tall.size()) {
-		item[sum] = true;
-		return;
-	}
-
-	dfs(tall, item, idx + 1, sum);
-	dfs(tall, item, idx + 1, sum + tall[idx]);
+void combination (vector<int> &height, int &b, int idx, int sum) {
+    if (sum >= b) {
+    	answer = min (answer, sum - b);
+    } else {
+        for (int i = idx; i < height.size(); i++) {
+            combination(height, b, i + 1, sum + height[i]);
+        }
+    }
 }
 
 int main() {
-	int tc;
-	cin >> tc;
-
-	for (int t = 1; t <= tc; t++) {
-		int n, b;
-		cin >> n >> b;
-
-		int max_height = 0;
-		vector<int> tall(n);
-		for (int i = 0; i < n; i++) {
-			cin >> tall[i];
-
-			max_height += tall[i];
-		}
-		
-		vector<bool> item(max_height + 1, false);
-		dfs(tall, item, 0, 0);
-
-		for (int i = 0; i < max_height / 2; i++) {
-			if (item[b + i]) {
-				cout << "#" << t << " " << abs(b - (b + i)) << "\n";
-				break;
-			} 
-		}
-	}
+	
+    cin.tie(NULL);
+    ios::sync_with_stdio(NULL);
+    
+    int t;
+    cin >> t;
+    
+    for (int tc = 1; tc <= t; tc++) {
+    	int people_cnt, b;
+        cin >> people_cnt >> b;
+        
+        vector<int> height(people_cnt);
+        for (int i = 0; i < people_cnt; i++) {
+        	cin >> height[i];
+        }
+        
+		answer = 999999;
+        combination(height, b, 0, 0);
+        
+        cout << "#" << tc << " " << answer << endl;
+    }
 }
