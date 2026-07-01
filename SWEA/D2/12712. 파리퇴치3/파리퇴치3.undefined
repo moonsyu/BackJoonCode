@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+/* + 방향 파리 퇴치 */
+int plus_check(vector<vector<int>>& area, int x, int y, int m) {
+
+    int dx[] = {-1, 0, 1, 0};
+    int dy[] = {0, 1, 0, -1};
+
+    int result = area[x][y];
+    for (int i = 1; i < m; i++) {
+        for (int j = 0; j < 4; j++) {
+            int nx = x + dx[j] * i;
+            int ny = y + dy[j] * i;
+
+            if (nx < 0 || nx >= area.size() || ny < 0 || ny >= area.size()) {
+                continue;
+            }
+
+            result += area[nx][ny];
+        }
+    }
+
+    return result;
+}
+
+
+/* x 방향 파리 퇴치 */
+int cross_check(vector<vector<int>>& area, int x, int y, int m) {
+
+    int dx[] = {-1, 1, 1, -1};
+    int dy[] = {1, 1, -1, -1};
+
+    int result = area[x][y];
+    for (int i = 1; i < m; i++) {
+        for (int j = 0; j < 4; j++) {
+            int nx = x + dx[j] * i;
+            int ny = y + dy[j] * i;
+
+            if (nx < 0 || nx >= area.size() || ny < 0 || ny >= area.size()) {
+                continue;
+            }
+
+            result += area[nx][ny];
+        }
+    }
+
+    return result;
+}
+
+
+int main() {
+
+    cin.tie(NULL);
+    ios::sync_with_stdio(false);
+
+    int t;
+    cin >> t;
+
+    for (int tc = 1; tc <= t; tc++) {
+        int n, m;
+        cin >> n >> m;
+
+        vector<vector<int>> area(n, vector<int>(n));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> area[i][j];
+            }
+        }
+
+        int answer = 0;
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int result = max(plus_check(area, i, j, m), cross_check(area, i, j, m));
+                answer = max(answer, result);
+            }
+        }
+
+        cout << "#" << tc << " " << answer << "\n";
+    }
+}
