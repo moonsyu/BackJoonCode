@@ -43,8 +43,11 @@ vector<int> solution(string s) {
     while (s != "1") {
         cnt++;
         
+        // 0의 개수 조회
         int zero_cnt = response_zero_cnt(s);
         total_zero_cnt += zero_cnt;
+        
+        // 1의 개수에 해당하는 2진수 반환
         s = int_to_binary(s.size() - zero_cnt);         
     }
     
