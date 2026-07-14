@@ -12,20 +12,9 @@ int char_to_int(char a, char b, int up) {
 }
 
 
-/* string 계산 */
-string calc(string a, string b) {
+/* 남은 구간 계산 */
+string final_calc(string a, string b, int up) {
     string result = "";
-    int up = 0;
-    for (int i = 0; i < b.size(); i++) {
-        result += to_string(char_to_int(a[i], b[i], up) % 10);
-        
-        if (char_to_int(a[i], b[i], up) >= 10) {
-            up = 1;
-        } else {
-            up = 0;
-        }
-    }
-
     for (int i = b.size(); i < a.size(); i++) {
         result += to_string(char_to_int(a[i], '0', up) % 10);
 
@@ -40,7 +29,27 @@ string calc(string a, string b) {
         result += "1";
     }
 
+    return result;
+}
+
+
+/* string 계산 */
+string calc(string a, string b) {
+    string result = "";
+    int up = 0;
+    for (int i = 0; i < b.size(); i++) {
+        result += to_string(char_to_int(a[i], b[i], up) % 10);
+        
+        if (char_to_int(a[i], b[i], up) >= 10) {
+            up = 1;
+        } else {
+            up = 0;
+        }
+    }
+
+    result += final_calc(a, b, up);
     reverse(result.begin(), result.end());
+    
     return result;
 }
 
