@@ -4,21 +4,14 @@ using namespace std;
 
 int main() {
 
-  int tc;
-  cin >> tc;
+    int tc;
+    cin >> tc;
 
-  for (int t = 1; t <= tc; t++) {
-    int d, l, n;
-    cin >> d >> l >> n;
+    for (int t = 1; t <= tc; t++) {
+        long long d, l, n;
+        cin >> d >> l >> n;
 
-    long long answer = 0;
-    for (int i = 0; i < n; i++) {
-      answer += d * i * l;
+        long long answer = d * ((n - 1) * n / 2) * l;
+        cout << "#" << t << " " << (answer / 100 + n * d) << endl;
     }
-
-    answer /= 100;
-    answer += n * d;
-
-    cout << "#" << t << " " << answer << endl;
-  }
 }
