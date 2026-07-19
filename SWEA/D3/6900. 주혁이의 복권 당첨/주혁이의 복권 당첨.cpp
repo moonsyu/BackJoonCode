@@ -31,6 +31,9 @@ long long same(vector<pair<string, long long>>& num, string ticket) {
 
 int main() {
 
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+
     int tc;
     cin >> tc;
 
