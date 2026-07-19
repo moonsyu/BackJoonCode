@@ -7,8 +7,6 @@ using namespace std;
 
 /* 당첨 여부 조회 */
 long long same(vector<pair<string, long long>>& num, string ticket) {
-    
-    long long result = 0;
     for (int i = 0; i < num.size(); i++) {
         
         // ticket과 복권번호 비교
@@ -21,11 +19,11 @@ long long same(vector<pair<string, long long>>& num, string ticket) {
         }
 
         if (same_ticket) {
-            result += num[i].second;
+            return num[i].second;
         }
     }
 
-    return result;
+    return 0;
 }
 
 
