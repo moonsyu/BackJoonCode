@@ -16,8 +16,7 @@ int main() {
         cin >> input;
 
         string answer = "No";
-        string s = "";
-        s += input.front();
+        string s(1, input.front());
         for (int i = 1; i < input.size(); ) {
          	if (input.substr(i, i + s.size()) == s) {
              	answer = "Yes";
