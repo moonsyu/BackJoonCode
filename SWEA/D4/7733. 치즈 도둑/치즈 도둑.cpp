@@ -69,7 +69,7 @@ int main() {
         }
 
         int answer = 1;
-        for (int day = 0; day <= 100; day++) {
+        for (int day = 1; day < 100; day++) {
 			if (day_list[day]) {
                 answer = max(answer, cheese_block(day));
 			}
