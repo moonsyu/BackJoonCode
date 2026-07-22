@@ -1,5 +1,4 @@
 #include <iostream>
-#include <queue>
 #include <algorithm>
 
 using namespace std;
@@ -8,26 +7,27 @@ int n;
 int cheese[10005];
 int visited[10005];
 int day_list[105];
-queue<int> que; 
 
+int que[10005];
 int dx[4] = { 1, 0, -1, 0 };
 int dy[4] = { 0, 1, 0, -1 };
 
 int cheese_block(int day, int t) {
     int result = 0;
-    // 테스트 케이스 번호(t)와 day를 조합하여 매번 고유한 마커 생성 (memset 대체)
     int mark = (t * 105) + day;
 
     for (int i = 0; i < n * n; i++) {
         if (cheese[i] > day && visited[i] != mark) {
             result++;
 
-            que.push(i);
+            int head = 0;
+            int tail = 0;
+
+            que[tail++] = i;
             visited[i] = mark;
 
-            while (!que.empty()) {
-                int cur = que.front();
-                que.pop();
+            while (head < tail) {
+                int cur = que[head++];
 
                 int cy = cur / n;
                 int cx = cur % n;
@@ -43,7 +43,7 @@ int cheese_block(int day, int t) {
                     int next_idx = ny * n + nx;
                     if (cheese[next_idx] > day && visited[next_idx] != mark) {
                         visited[next_idx] = mark;
-                        que.push(next_idx);
+                        que[tail++] = next_idx;
                     }
                 }
             }
