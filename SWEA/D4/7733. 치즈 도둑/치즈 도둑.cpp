@@ -52,6 +52,7 @@ int main() {
 
 	cin.tie(nullptr);
 	ios::sync_with_stdio(false);
+	cout.tie(nullptr);
 
     int tc;
     cin >> tc;
