@@ -1,16 +1,18 @@
 #include <iostream>
-#include <vector>
 #include <queue>
+#include <cstring>
 #include <algorithm>
 
 using namespace std;
 
 int n;
+int cheese[100][100];
+int visited[100][100];
 
 queue<pair<int, int>> que;
 int dx[4] = { 1, 0, -1, 0 };
 int dy[4] = { 0, 1, 0, -1 };
-int cheese_block(vector<vector<int>>& cheese, vector<vector<int>>& visited, int day) {
+int cheese_block(int day) {
     int result = 0;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -55,11 +57,11 @@ int main() {
     cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
+        memset(visited, 0, sizeof(visited));
+
         cin >> n;
 
         int max_day = 0;
-		vector<vector<int>> cheese(n, vector<int>(n));
-        vector<vector<int>> visited(n, vector<int>(n));
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 cin >> cheese[i][j];
@@ -69,7 +71,7 @@ int main() {
 
         int answer = 1;
         for (int i = 1; i <= max_day; i++) {
-            answer = max(answer, cheese_block(cheese, visited, i));
+            answer = max(answer, cheese_block(i));
         }
 
         cout << "#" << t << " " << answer << endl;
