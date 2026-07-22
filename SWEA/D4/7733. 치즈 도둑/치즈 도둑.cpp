@@ -8,6 +8,7 @@ using namespace std;
 int n;
 int cheese[100][100];
 int visited[100][100];
+bool day_list[101];
 
 queue<pair<int, int>> que;
 int dx[4] = { 1, 0, -1, 0 };
@@ -47,7 +48,6 @@ int cheese_block(int day) {
     return result;
 }
 
-
 int main() {
 
 	cin.tie(nullptr);
@@ -57,21 +57,22 @@ int main() {
     cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
+        memset(day_list, false, sizeof(day_list));
         memset(visited, 0, sizeof(visited));
 
         cin >> n;
-
-        int max_day = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 cin >> cheese[i][j];
-				max_day = max(max_day, cheese[i][j]);
+                day_list[cheese[i][j]] = true;
             }
         }
 
         int answer = 1;
-        for (int i = 1; i <= max_day; i++) {
-            answer = max(answer, cheese_block(i));
+        for (int day = 0; day <= 100; day++) {
+			if (day_list[day]) {
+                answer = max(answer, cheese_block(day));
+			}
         }
 
         cout << "#" << t << " " << answer << endl;
