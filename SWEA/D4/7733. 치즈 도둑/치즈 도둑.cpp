@@ -9,17 +9,18 @@ int n;
 int dx[4] = { 1, 0, -1, 0 };
 int dy[4] = { 0, 1, 0, -1 };
 
-int cheese_block(vector<vector<int>> cheese, int day) {
+int cheese_block(const vector<vector<int>>& cheese, int day) {
     int result = 0;
+
+    vector<vector<bool>> visited(n, vector<bool>(n, false));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            if (cheese[i][j] > day) {
+            if (cheese[i][j] > day && !visited[i][j]) {
                 result++;
 
-                // 이어진 치즈 덩어리 초기화
                 queue<pair<int, int>> que;
                 que.push({ i, j });
-                cheese[i][j] = day;
+                visited[i][j] = true;
 
                 while (!que.empty()) {
                     auto [x, y] = que.front();
@@ -33,8 +34,8 @@ int cheese_block(vector<vector<int>> cheese, int day) {
                             continue;
                         }
 
-                        if (cheese[nx][ny] > day) {
-                            cheese[nx][ny] = day;
+                        if (cheese[nx][ny] > day && !visited[nx][ny]) {
+                            visited[nx][ny] = true;
                             que.push({ nx, ny });
                         }
                     }
