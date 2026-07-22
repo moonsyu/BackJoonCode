@@ -1,44 +1,49 @@
 #include <iostream>
 #include <queue>
-#include <cstring>
 #include <algorithm>
 
 using namespace std;
 
 int n;
-int cheese[100][100];
-int visited[100][100][100];
-int day_list[101];
+int cheese[10005];
+int visited[10005];
+int day_list[105];
+queue<int> que; 
 
-queue<pair<int, int>> que;
 int dx[4] = { 1, 0, -1, 0 };
 int dy[4] = { 0, 1, 0, -1 };
+
 int cheese_block(int day, int t) {
     int result = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (cheese[i][j] > day && visited[i][j][t] != day) {
-                result++;
+    // 테스트 케이스 번호(t)와 day를 조합하여 매번 고유한 마커 생성 (memset 대체)
+    int mark = (t * 105) + day;
 
-                que.push({ i, j });
-                visited[i][j][t] = day;
+    for (int i = 0; i < n * n; i++) {
+        if (cheese[i] > day && visited[i] != mark) {
+            result++;
 
-                while (!que.empty()) {
-                    auto [x, y] = que.front();
-                    que.pop();
+            que.push(i);
+            visited[i] = mark;
 
-                    for (int d = 0; d < 4; d++) {
-                        int nx = x + dx[d];
-                        int ny = y + dy[d];
+            while (!que.empty()) {
+                int cur = que.front();
+                que.pop();
 
-                        if (nx < 0 || nx >= n || ny < 0 || ny >= n) {
-                            continue;
-                        }
+                int cy = cur / n;
+                int cx = cur % n;
 
-                        if (cheese[nx][ny] > day && visited[nx][ny][t] != day) {
-                            visited[nx][ny][t] = day;
-                            que.push({ nx, ny });
-                        }
+                for (int d = 0; d < 4; d++) {
+                    int nx = cx + dx[d];
+                    int ny = cy + dy[d];
+
+                    if (nx < 0 || nx >= n || ny < 0 || ny >= n) {
+                        continue;
+                    }
+
+                    int next_idx = ny * n + nx;
+                    if (cheese[next_idx] > day && visited[next_idx] != mark) {
+                        visited[next_idx] = mark;
+                        que.push(next_idx);
                     }
                 }
             }
@@ -49,31 +54,27 @@ int cheese_block(int day, int t) {
 }
 
 int main() {
-
-	cin.tie(nullptr);
-	ios::sync_with_stdio(false);
-	cout.tie(nullptr);
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
 
     int tc;
     cin >> tc;
 
     for (int t = 1; t <= tc; t++) {
-
         cin >> n;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                cin >> cheese[i][j];
-                day_list[cheese[i][j]] = t;
-            }
+
+        for (int i = 0; i < n * n; i++) {
+            cin >> cheese[i];
+            day_list[cheese[i]] = t;
         }
 
         int answer = 1;
         for (int day = 1; day < 100; day++) {
-			if (day_list[day] == t) {
+            if (day_list[day] == t) {
                 answer = max(answer, cheese_block(day, t));
-			}
+            }
         }
 
-        cout << "#" << t << " " << answer << endl;
+        cout << "#" << t << " " << answer << "\n";
     }
 }
