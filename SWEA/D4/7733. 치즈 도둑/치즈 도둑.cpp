@@ -5,21 +5,21 @@
 
 using namespace std;
 
-int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, 1, 0, -1};
+int n;
+int dx[4] = { 1, 0, -1, 0 };
+int dy[4] = { 0, 1, 0, -1 };
 
-/* 치즈 덩어리 탐색 */
-int cnt_block(vector<vector<int>> cheese, int n) {
+int cheese_block(vector<vector<int>> cheese, int day) {
     int result = 0;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            if (cheese[i][j]) {
+            if (cheese[i][j] > day) {
                 result++;
 
                 // 이어진 치즈 덩어리 초기화
                 queue<pair<int, int>> que;
-                que.push({i, j});
-                cheese[i][j] = 0;
+                que.push({ i, j });
+                cheese[i][j] = day;
 
                 while (!que.empty()) {
                     auto [x, y] = que.front();
@@ -33,9 +33,9 @@ int cnt_block(vector<vector<int>> cheese, int n) {
                             continue;
                         }
 
-                        if (cheese[nx][ny]) {
-                            cheese[nx][ny] = 0;
-                            que.push({nx, ny});
+                        if (cheese[nx][ny] > day) {
+                            cheese[nx][ny] = day;
+                            que.push({ nx, ny });
                         }
                     }
                 }
@@ -47,45 +47,31 @@ int cnt_block(vector<vector<int>> cheese, int n) {
 }
 
 
-int main()
-{
+int main() {
 
-    cin.tie(nullptr);
-    ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	ios::sync_with_stdio(false);
 
     int tc;
     cin >> tc;
 
-    for (int t = 1; t <= tc; t++)
-    {
-        int n;
+    for (int t = 1; t <= tc; t++) {
         cin >> n;
 
-        // 치즈 입력
-        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> que;
-        vector<vector<int>> cheese(n, vector<int>(n));
+        int max_day = 0;
+		vector<vector<int>> cheese(n, vector<int>(n));
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 cin >> cheese[i][j];
-                que.push({cheese[i][j], {i, j}});
+				max_day = max(max_day, cheese[i][j]);
             }
         }
 
-        // 치즈 섭취
-        int answer = 1;
-        for (int i = 1; i <= 100 && !que.empty(); i++) {   
-            // i일차에 섭취할 치즈 제거
-            while (!que.empty() && que.top().first == i) {
-                auto [value, pos] = que.top();
-                que.pop();
-
-                cheese[pos.first][pos.second] = 0;
-            }
-
-            // 치즈 덩어리 탐색 및 개수 업데이트
-            answer = max(answer, cnt_block(cheese, n));
+        int answer = -1;
+        for (int i = 0; i <= max_day; i++) {
+            answer = max(answer, cheese_block(cheese, i));
         }
 
-        cout << "#" << t << " " << answer << "\n";
+        cout << "#" << t << " " << answer << endl;
     }
 }
