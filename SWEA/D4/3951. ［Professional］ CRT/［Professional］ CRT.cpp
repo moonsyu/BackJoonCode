@@ -24,8 +24,10 @@ int main() {
 		}
 
 		int answer = 0;
-		bool result = true;
-		while (result) {
+
+		bool result;
+		while (true) {
+			result = true;
 			for (int i = 0; i < n; i++) {
 				if (num[i] < answer) {
 					result = false;
@@ -38,8 +40,6 @@ int main() {
 
 			if (result) {
 				break;
-			} else {
-				result = true;
 			}
 		}
 
