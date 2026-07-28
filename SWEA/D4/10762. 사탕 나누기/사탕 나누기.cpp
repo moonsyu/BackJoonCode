@@ -1,9 +1,9 @@
 #include <iostream>
-#include <string>
 
 using namespace std;
 
 int n;
+int input;
 int min_num;
 long long result, sum;
 
@@ -18,16 +18,14 @@ int main() {
 	for (int t = 1; t <= tc; t++) {
 		cin >> n;
 
-		sum = 0;
-		result = 0;
-		min_num = 1000001;
-		for (int i = 0; i < n; i++) {
-			int num;
-			cin >> num;
+		cin >> input;
+		sum = result = min_num = input;
+		for (int i = 1; i < n; i++) {
+			cin >> input;
 
-			sum += num;
-			min_num = min(min_num, num);
-			result = (result ? result ^ num : num);
+			sum += input;
+			min_num = min(min_num, input);
+			result ^= input;
 		}
 
 		cout << "#" << t << " ";
