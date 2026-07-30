@@ -1,0 +1,94 @@
+#include <iostream>
+
+
+using namespace std;
+
+
+struct Pair {
+	int y;
+	int x;
+};
+
+
+int n, m;
+char board[50][50];
+
+Pair stack[2500];
+int stack_idx = 0;
+
+
+/* 가로 단어 확인 */
+bool row_word_check(int y, int x) {
+	int blank_cnt = 0;
+	if (x - 1 < 0 || board[y][x - 1] == '#') {
+		for (int i = x + 1; i < m && board[y][i] == '.'; i++) {
+			blank_cnt++;
+		}
+	}
+
+	if (blank_cnt >= 2) {
+		stack[stack_idx++] = { y, x };
+		return true;
+	}
+
+	return false;
+}
+
+
+/* 세로 단어 확인 */
+bool col_word_check(int y, int x) {
+	int blank_cnt = 0;
+	if (y - 1 < 0 || board[y - 1][x] == '#') {
+		for (int i = y + 1; i < n && board[i][x] == '.'; i++) {
+			blank_cnt++;
+		}
+	}
+
+	if (blank_cnt >= 2) {
+		stack[stack_idx++] = { y, x };
+		return true;
+	}
+
+	return false;
+}
+
+
+/* 단어 시작점 찾기 */
+void search_word() {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (board[i][j] == '.') {
+				if (!row_word_check(i, j)) { // 가로 단어 찾기 실패 시 세로 단어 탐색
+					col_word_check(i, j);
+				}
+			}
+		}
+	}
+}
+
+
+/* 출력 */
+void output() {
+	cout << stack_idx << '\n';
+	for (int i = 0; i < stack_idx; i++) {
+		cout << stack[i].y + 1 << ' ' << stack[i].x + 1 << '\n';
+	}
+}
+
+
+int main() {
+
+	cin.tie(nullptr);
+	ios::sync_with_stdio(false);
+	cout.tie(nullptr);
+
+	cin >> n >> m;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> board[i][j];
+		}
+	}
+
+	search_word();
+	output();
+}
