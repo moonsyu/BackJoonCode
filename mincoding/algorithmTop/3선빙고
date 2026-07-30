@@ -1,0 +1,83 @@
+#include <iostream>
+
+
+using namespace std;
+
+struct Pair {
+	int y;
+	int x;
+};
+
+Pair num_fw[26];
+int area[5][5];
+int bingo_cnt = 0;
+
+/* 가로 체크 */
+bool row_check(int y) {
+	for (int i = 0; i < 5; i++) {
+		if (area[y][i]) return false;
+	}
+
+	return true;
+}
+
+
+/* 세로 체크 */
+bool col_check(int x) {
+	for (int i = 0; i < 5; i++) {
+		if (area[i][x]) return false;
+	}
+
+	return true;
+}
+
+
+/* 왼쪽 대각선 체크 */
+bool left_diagonal_check() {
+	for (int i = 0; i < 5; i++) {
+		if (area[i][i]) return false;
+	}
+
+	return true;
+}
+
+/* 오른쪽 대각선 체크 */
+bool right_diagonal_check() {
+	for (int i = 0; i < 5; i++) {
+		if (area[i][4 - i]) return false;
+	}
+
+	return true;
+}
+
+
+int main() {
+
+	cin.tie(nullptr);
+	ios::sync_with_stdio(false);
+	cout.tie(nullptr);
+
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			cin >> area[i][j];
+			num_fw[area[i][j]] = { i, j };
+		}
+	}
+
+	int num;
+	for (int i = 0; i < 25 && bingo_cnt <= 2; i++) {
+		cin >> num;
+
+		int y = num_fw[num].y;
+		int x = num_fw[num].x;
+		area[y][x] = 0;
+
+		// 해당 좌표 기준 빙고 개수 확인
+		if (row_check(y)) bingo_cnt++;
+		if (col_check(x)) bingo_cnt++;
+		if (y == x && left_diagonal_check()) bingo_cnt++;
+		if (y + x == 4 && right_diagonal_check()) bingo_cnt++;
+	}
+
+	cout << num;
+}
