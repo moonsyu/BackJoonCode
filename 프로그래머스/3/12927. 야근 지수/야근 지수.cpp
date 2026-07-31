@@ -1,7 +1,6 @@
 #include <string>
 #include <vector>
-#include <cmath>
-
+#include <iostream>
 using namespace std;
 
 int num_cnt[50001];
@@ -14,19 +13,17 @@ long long solution(int n, vector<int> works) {
         max_num = max(max_num, works[i]);
     }
     
-    while(n) {        
-        if (num_cnt[max_num]) {
-            n--;
-            num_cnt[max_num]--;
-            num_cnt[max_num - 1]++;
-        } else {
-            max_num--;
-        }
-    }
-    
     long long answer = 0;
-    for (int i = 0; i < 50000; i++) {
-        answer += i * i * num_cnt[i];
+    for (int i = max_num; i >= 0; i--) {
+        if (num_cnt[i] && n) {
+            n--;
+            num_cnt[i - 1]++;
+            num_cnt[i++]--;
+        }
+        
+        if (!n) {
+            answer += i * i * num_cnt[i];
+        }
     }
     
     return answer;
