@@ -8,7 +8,7 @@ char stack[10000];
 
 
 /* 중위 -> 후위 표현식 변환 */
-string postfix(string input) {
+string in_to_postfix(string input) {
 	string result = "";
     for (int i = 0; i < n; i++) {
         if (input[i] == '(') { // '('이면 스택에 push
@@ -80,6 +80,6 @@ int main() {
         string input;
         cin >> input;
 
-        cout << "#" << t << " " << output(postfix(input)) << endl;
+        cout << "#" << t << " " << output(in_to_postfix(input)) << endl;
     }
 }
