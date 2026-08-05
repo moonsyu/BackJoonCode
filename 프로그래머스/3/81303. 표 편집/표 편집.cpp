@@ -51,6 +51,7 @@ void answer_table(string &answer, int& n) {
     }
 }
 
+
 string solution(int n, int k, vector<string> cmd) {
     top = 0;
     reset_table(n);
