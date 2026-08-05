@@ -24,7 +24,7 @@ void reset_table(int& n) {
 
 
 /* 테이블 삭제 */
-void delete_table(int& k, int& n) {
+void delete_table(int& k) {
 	table[k].is_active = false;
 
 	table[table[k].front].rear = table[k].rear;
@@ -60,17 +60,17 @@ string solution(int n, int k, vector<string> cmd) {
 
         if (command == 'C') {
             stack[top++] = k;
-            delete_table(k, n);
+            delete_table(k);
         } else if (command == 'Z') {
             restore_table(stack[--top]);
         } else {
 			int value = stoi(cmd[i].substr(2));
             if (command == 'U') {
-                for (int j = 0; j < value; j++) {
+                for (int j = 0; j < value && k > 0; j++) {
                     k = table[k].front;
                 }
             } else {
-                for (int j = 0; j < value; j++) {
+                for (int j = 0; j < value && k < n - 1; j++) {
                     k = table[k].rear;
                 }
             }
