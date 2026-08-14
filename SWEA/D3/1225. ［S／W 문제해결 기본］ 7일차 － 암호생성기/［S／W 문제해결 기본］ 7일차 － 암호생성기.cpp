@@ -1,42 +1,60 @@
 #include <iostream>
-#include <queue>
 
-#define tc 10
-#define input_size 8
+#define QUEUE_SIZE 100
+
 using namespace std;
 
-int main() {
-	
-	for (int i = 0; i < tc; i++) {
-		int t;
-		cin >> t;
 
-		queue<int> que;
-		for (int j = 0; j < input_size; j++) {
-			int num;
-			cin >> num;
-			que.push(num);
+int front, rear;
+long long que[QUEUE_SIZE];
+
+/* 입출력 최적화 */
+void optimize_io() {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
+}
+
+int main() {
+
+	optimize_io();
+
+	int tc = 10;
+	for (int t = 1; t <= tc; t++) {
+		int trash;
+		cin >> trash;
+		
+		long long min_divide = 9999999999;
+		front = rear = 0;
+		for (int i = 0; i < 8; i++) {
+			cin >> que[rear++];
+			min_divide = min(min_divide, (que[rear - 1] - 1)/ 15);
 		}
 
-		int cnt = 0;
-		while (true) {
-			int now = que.front();
-			que.pop();
+		for (int i = front; i < rear; i++) {
+			que[i] -= min_divide * 15;
+		}
 
-			cnt = ++cnt % 5 ? cnt % 5 : 5;
-			if (now - cnt <= 0) {
-				que.push(0);
+		while (front < rear) {
+			// 원형 큐
+			if (front >= QUEUE_SIZE) {
+				front %= QUEUE_SIZE;
+				rear %= QUEUE_SIZE;
+			}
+
+			long long clac_num = que[front] - ((front++) % 5 + 1);
+			if (clac_num <= 0) {
+				que[rear++] = 0;
 				break;
 			} else {
-				que.push(now - cnt);
+				que[rear++] = clac_num;
 			}
 		}
 
 		cout << "#" << t << " ";
-		while (!que.empty()) {
-			cout << que.front() << " ";
-			que.pop();
+		for (int i = front; i < rear; i++) {
+			cout << que[i % QUEUE_SIZE] << " ";
 		}
-		cout << endl;
+		cout << "\n";
 	}
 }
