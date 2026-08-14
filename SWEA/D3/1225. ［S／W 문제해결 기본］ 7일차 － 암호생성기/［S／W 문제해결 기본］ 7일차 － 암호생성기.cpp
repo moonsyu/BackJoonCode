@@ -43,7 +43,7 @@ int main() {
 			rear %= QUEUE_SIZE;
 
 			// 암호문 생성 규칙에 따라 계산
-			long long clac_num = que[front] - ((front++) % 5 + 1);
+			int clac_num = que[front] - ((front++) % 5 + 1);
 			if (clac_num <= 0) {
 				que[rear++] = 0;
 				break;
