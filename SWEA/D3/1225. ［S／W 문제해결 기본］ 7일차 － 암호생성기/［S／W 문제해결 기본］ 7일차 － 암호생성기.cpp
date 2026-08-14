@@ -1,4 +1,5 @@
 #include <iostream>
+#include <climits>
 
 #define QUEUE_SIZE 100
 
@@ -6,7 +7,7 @@ using namespace std;
 
 
 int front, rear;
-long long que[QUEUE_SIZE];
+int que[QUEUE_SIZE];
 
 /* 입출력 최적화 */
 void optimize_io() {
@@ -24,24 +25,24 @@ int main() {
 		int trash;
 		cin >> trash;
 		
-		long long min_divide = 9999999999;
+		int min_divide = INT_MAX;
 		front = rear = 0;
 		for (int i = 0; i < 8; i++) {
 			cin >> que[rear++];
-			min_divide = min(min_divide, (que[rear - 1] - 1)/ 15);
+			min_divide = min(min_divide, (que[rear - 1] - 1) / 15);
 		}
 
 		for (int i = front; i < rear; i++) {
 			que[i] -= min_divide * 15;
 		}
 
-		while (front < rear) {
-			// 원형 큐
-			if (front >= QUEUE_SIZE) {
-				front %= QUEUE_SIZE;
-				rear %= QUEUE_SIZE;
-			}
+		while (true) {
 
+			// 원형 큐 구현
+			front %= QUEUE_SIZE;
+			rear %= QUEUE_SIZE;
+
+			// 암호문 생성 규칙에 따라 계산
 			long long clac_num = que[front] - ((front++) % 5 + 1);
 			if (clac_num <= 0) {
 				que[rear++] = 0;
