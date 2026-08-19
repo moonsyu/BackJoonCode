@@ -3,7 +3,7 @@
 #include <queue>
 #include <algorithm>
 
-#define MAX_INT 10000001
+#define MAX_INT 10000000
 
 using namespace std;
 
@@ -92,11 +92,10 @@ Edge_Data dijkstra() {
             if (pre_value > now_value) {
                 visit_node[graph_info.node] = {summit, now_value};
                 pq.push({summit, graph_info.node, now_value});
-            } else if (pre_value == now_value && 
-                       visit_node[graph_info.node].summit > summit) { 
+            } else if (pre_value == now_value && visit_node[graph_info.node].summit > summit) { 
                 visit_node[graph_info.node] = {summit, now_value};
                 pq.push({summit, graph_info.node, now_value});
-            }
+                }
         }
     }
 }
