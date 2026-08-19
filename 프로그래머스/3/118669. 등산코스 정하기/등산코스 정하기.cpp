@@ -3,7 +3,7 @@
 #include <queue>
 #include <algorithm>
 
-#define MAX_INT 10000000
+#define MAX_INT 10000001
 
 using namespace std;
 
@@ -40,16 +40,12 @@ visit_log visit_node[50001];
 // 출 입구 여부
 bool gate_info[50001];
 
-// 산봉우리 여부
-bool summit_info[50001];
-
 //--------------------------------------------------
 
 /* 출/입구 및 산봉우리 여부 초기화 */
 void reset_info(int& n, vector<vector<int>>& paths, vector<int>& gates, vector<int>& summits) {    
-    // 출/입구 및 산봉우리 정보 초기화
+    // 출/입구 및 방문 정보 초기화
     fill (gate_info, gate_info + n + 1, false);
-    fill (summit_info, summit_info + n + 1, false);
     fill (visit_node, visit_node + n + 1, visit_log{0, MAX_INT});
     
     // 등산로 정보 입력
@@ -61,11 +57,6 @@ void reset_info(int& n, vector<vector<int>>& paths, vector<int>& gates, vector<i
     // 출/입구 여부 기록
     for (const auto& gate_num : gates) {
         gate_info[gate_num] = true;
-    }
-    
-    // 산봉우리 여부 기록
-    for (const auto& summit_num : summits) {
-        summit_info[summit_num] = true;
     }
 }
 
@@ -92,10 +83,11 @@ Edge_Data dijkstra() {
             if (pre_value > now_value) {
                 visit_node[graph_info.node] = {summit, now_value};
                 pq.push({summit, graph_info.node, now_value});
-            } else if (pre_value == now_value && visit_node[graph_info.node].summit > summit) { 
+            } else if (pre_value == now_value && 
+                       visit_node[graph_info.node].summit > summit) { 
                 visit_node[graph_info.node] = {summit, now_value};
                 pq.push({summit, graph_info.node, now_value});
-                }
+            }
         }
     }
 }
